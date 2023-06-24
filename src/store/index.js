@@ -53,14 +53,6 @@ const counterSubscriber = () => {
 // subscriber function to the .subscribe() method on our store.
 store.subscribe(counterSubscriber);
 
-// .dispatch() is a method which dispatches an action. An action is a Javascript object 
-// with a "type" property which acts as an identifier. Typically type would be a string
-// which identifies which action is being performed. Every time an action runs (or is 
-// "dispatched") the reducer function runs again.
-store.dispatch({ type: 'INCREMENT' });
-
-store.dispatch({ type: 'DECREMENT'});
-
-// Hwn we run "node redux-demo.js in the console we recieve { counter: 1 } and then 
+// When we run "node redux-demo.js in the console we recieve { counter: 1 } and then 
 // { counter: 0 }. This is because we dispatched two actions (seen directly above) where
 //  the counter is incremented and then decremented.
