@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// Importing the Provider component from react-redux so that we can wrap our app in it.
-// We are doing this so we can provide our data store by passing it in as a prop.
+// Importing the Provider component from the react-redux library so that we can wrap our 
+// app in it. We are doing this so we can provide our data store by passing it in as a 
+// prop.
 import { Provider } from 'react-redux';
 
 import './index.css';
