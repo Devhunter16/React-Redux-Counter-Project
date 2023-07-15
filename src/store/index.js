@@ -4,29 +4,51 @@ import { createStore } from 'redux';
 // Core redux concepts: Central Data (State) Store --> Components --> Action -->
 // Reducer Function --> Back around to beginning
 
-// Reducer function. A reducer function's goal is to spit out state snapshot initially
-// and also whenever an action reaches it. It always recieves two parameters, the old
-// or existing state, and the action that was dispatched. It's output is the new state
+// Defining our starting state
+const initialState = { 
+    counter: 0,
+    showCounter: true
+};
+
+// Reducer function. A reducer function's goal is to spit out a state snapshot initially
+// and also whenever an action reaches it. It always recieves two parameters, the
+// existing state, and the action that was dispatched. It's output is the new state
 // object. This should be a "pure" function, meaning that the same inputs should always
 // produce the same output. In other words, there should be no side-effects. We give
 // the state parameter a default value becuase the first time counterReducer runs, there
 // is not existing or current state, so we need to define a current state.
-const counterReducer = (currentState = { counter: 0 }, action) => {
+const counterReducer = (state = initialState, action) => {
     // if the type of action is 'INCREMENT', then return the incremented new state.
     if (action.type === 'INCREMENT') {
         // Returning the new state.
         return {
-            counter: currentState.counter + 1
+            counter: state.counter + 1,
+            showCounter: state.showCounter // Keeping showCounter as whatever it was in the last state
+        };
+    };
+    if (action.type === 'INCREASE') {
+        // Returning the current state + the action.amount. We define what that amount
+        // is when we dispatch the action in one of our components.
+        return {
+            counter: state.counter + action.amount,
+            showCounter: state.showCounter
         };
     };
     if (action.type === 'DECREMENT') {
         return {
-            counter: currentState.counter - 1
+            counter: state.counter - 1,
+            showCounter: state.showCounter
+        };
+    };
+    if (action.type === 'TOGGLE') {
+        return {
+            counter: state.counter,
+            showCounter: !state.showCounter // Making showCounter the opposite of whatever it was in the last state
         };
     };
 
     // Otherwise we return the unchanged state.
-    return currentState;
+    return state;
 };
 
 // Creating the central data store. We pass our reducer to this createStore() function.

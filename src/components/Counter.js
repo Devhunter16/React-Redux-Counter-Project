@@ -18,6 +18,7 @@ const Counter = () => {
   // for this component so that it will get all updates to the whatever data we're 
   // extracting from our store, in this case we will get all updates to the counter. 
   const counter = useSelector(state => state.counter);
+  const show = useSelector(state => state.showCounter);
  
   const incrementHandler = () => {
     // Using our dispatch() function which dispatches an action. An action is a 
@@ -29,18 +30,28 @@ const Counter = () => {
     dispatch({ type: 'INCREMENT' });
   };
 
-  const decrementHandler = () => {
-    dispatch({ type: 'DECREMENT'});
+  // In this function, we not only dispatch our action, but we pass in another value
+  // that we cann "amount". If you look in our reducer function for our data store, you
+  // can see that we have an "amount" variable there.
+  const increaseHandler = () => {
+    dispatch({ type: 'INCREASE', amount: 5 })
   };
 
-  const toggleCounterHandler = () => {};
+  const decrementHandler = () => {
+    dispatch({ type: 'DECREMENT' });
+  };
+
+  const toggleCounterHandler = () => {
+    dispatch({ type: 'TOGGLE'});
+  };
 
   return (
     <main className={classes.counter}>
       <h1>Redux Counter</h1>
-      <div className={classes.value}>{counter}</div>
+      {show && <div className={classes.value}>{counter}</div>}
       <div>
         <button onClick={incrementHandler}>Increment</button>
+        <button onClick={increaseHandler}>Increase by 5</button>
         <button onClick={decrementHandler}>Decrement</button>
       </div>
       <button onClick={toggleCounterHandler}>Toggle Counter</button>
