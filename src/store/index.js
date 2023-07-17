@@ -75,6 +75,25 @@ const counterSubscriber = () => {
 // subscriber function to the .subscribe() method on our store.
 store.subscribe(counterSubscriber);
 
-// When we run "node redux-demo.js in the console we recieve { counter: 1 } and then 
-// { counter: 0 }. This is because we dispatched two actions (seen directly above) where
-//  the counter is incremented and then decremented.
+/* You might ask yourself, why are we doing this: 
+
+   if (action.type === 'INCREMENT') {
+        return {
+            counter: state.counter + 1,
+        };
+    };
+
+    rather than this:
+
+    if (action.type === 'INCREMENT') {
+        state.counter++;
+        return {
+            state,
+        };
+    };
+
+    We should NEVER change the existing state when working with Redux. Always override
+    it by returning a new state object. If we mutate the existing state rather than 
+    returning a new state, it can lead to bugs and unpredictable behavior. This can 
+    make debugging the app very, very frustrating.
+*/
