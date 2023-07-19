@@ -5,6 +5,9 @@
 // the store from within this component.
 import { useSelector, useDispatch } from 'react-redux';
 
+// Importing our potential actions from index.js so we can manipulate the data store from
+// this file.
+import { counterActions } from '../store/index';
 import classes from './Counter.module.css';
 
 const Counter = () => {
@@ -26,23 +29,25 @@ const Counter = () => {
     // type would be a string which identifies which action is being performed. Every 
     // time an action runs (or is "dispatched") the redux store reducer function runs 
     // again depending on that type of action we're dispatching. See the index.js file
-    // to take a look at the redux store reducer function.
-    dispatch({ type: 'INCREMENT' });
+    // to take a look at the redux store reducer functions.
+    dispatch(counterActions.increment());
   };
 
-  // In this function, we not only dispatch our action, but we pass in another value
-  // that we cann "amount". If you look in our reducer function for our data store, you
-  // can see that we have an "amount" variable there.
+  // In this function, we not only dispatch our action, but we pass in a value
+  // of 5. This is because we want to increase by 5. Any value we pass into an action
+  // method (in this case 5) will be stored in a field we cannot see called "payload".
+  // Redux Toolkit does this automatically. So if you look at our Index.js file and you
+  // see "payload" that is 5.
   const increaseHandler = () => {
-    dispatch({ type: 'INCREASE', amount: 5 })
+    dispatch(counterActions.increase(5))
   };
 
   const decrementHandler = () => {
-    dispatch({ type: 'DECREMENT' });
+    dispatch(counterActions.decrement());
   };
 
   const toggleCounterHandler = () => {
-    dispatch({ type: 'TOGGLE'});
+    dispatch(counterActions.toggleCounter());
   };
 
   return (

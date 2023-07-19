@@ -1,5 +1,5 @@
-// Importing the createStore function from redux 
-import { createStore } from 'redux';
+// Importing the createSlice and configureStore functions from redux toolkit
+import { createSlice, configureStore } from '@reduxjs/toolkit';
 
 // Core redux concepts: Central Data (State) Store --> Components --> Action -->
 // Reducer Function --> Back around to beginning
@@ -10,51 +10,48 @@ const initialState = {
     showCounter: true
 };
 
-// Reducer function. A reducer function's goal is to spit out a state snapshot initially
-// and also whenever an action reaches it. It always recieves two parameters, the
-// existing state, and the action that was dispatched. It's output is the new state
-// object. This should be a "pure" function, meaning that the same inputs should always
-// produce the same output. In other words, there should be no side-effects. We give
-// the state parameter a default value becuase the first time counterReducer runs, there
-// is not existing or current state, so we need to define a current state.
-const counterReducer = (state = initialState, action) => {
-    // if the type of action is 'INCREMENT', then return the incremented new state.
-    if (action.type === 'INCREMENT') {
-        // Returning the new state.
-        return {
-            counter: state.counter + 1,
-            showCounter: state.showCounter // Keeping showCounter as whatever it was in the last state
-        };
-    };
-    if (action.type === 'INCREASE') {
-        // Returning the current state + the action.amount. We define what that amount
-        // is when we dispatch the action in one of our components.
-        return {
-            counter: state.counter + action.amount,
-            showCounter: state.showCounter
-        };
-    };
-    if (action.type === 'DECREMENT') {
-        return {
-            counter: state.counter - 1,
-            showCounter: state.showCounter
-        };
-    };
-    if (action.type === 'TOGGLE') {
-        return {
-            counter: state.counter,
-            showCounter: !state.showCounter // Making showCounter the opposite of whatever it was in the last state
-        };
-    };
+// createSlice prepares a slice of our global state. It takes an object as an argument.
+// Every slice requires a "name" property within that object. It
+// also requires an initial state (for ours we're just using our already-defined initial
+// state). We need reducer functions as well. Each reducer function we define within 
+// createSlice automatically recieves the current state. Unlike reducer functions we
+// define outside of createSlice, the ones we define here can directly manipulate the 
+// current state in order to update it without causing bugs (redux toolkit handles this
+// for us).
+const counterSlice = createSlice({
+    name: 'counter',
+    initialState: initialState,
+    reducers: {
+        increment(state) {
+            state.counter++;
+        },
+        decrement(state) {
+            state.counter--;
+        },
+        increase(state, action) {
+            // Take a look at the Counter.js file to see what payload is.
+            state.counter = state.counter + action.payload;
+        },
+        toggleCounter(state) {
+            state.showCounter = !state.showCounter;
+        }
+    }
+});
 
-    // Otherwise we return the unchanged state.
-    return state;
-};
+// Creating the central data store. We use our configureStore function imported from
+// redix toolkit here. We pass in the expected "reducer" property here. 
+// counterSlice.reducer is all of the reducer functions we defined in counterSlice. 
+// This can be confusing because on counterSlice they are defined with "reducers" and
+// not "reducer".
+const store = configureStore({
+    reducer: counterSlice.reducer
+});
 
-// Creating the central data store. We pass our reducer to this createStore() function.
-// We do this because the store needs to know which reducer function is responsible for
-// changing it.
-const store = createStore(counterReducer);
+// Exporting counterSlice.actions here which gives us access to actions that
+// automatically trigger our reducer functions we defined using createSlice().
+// We want to access these actions in other components so we can update the data
+// store using those components.
+export const counterActions = counterSlice.actions;
 
 // We want to export our store and connect our React application to our store. To do
 // this, we need to provide this store to the React app. Take a look at the other
@@ -74,26 +71,3 @@ const counterSubscriber = () => {
 // function should be executed whenever our state changes. We do this by passing our 
 // subscriber function to the .subscribe() method on our store.
 store.subscribe(counterSubscriber);
-
-/* You might ask yourself, why are we doing this: 
-
-   if (action.type === 'INCREMENT') {
-        return {
-            counter: state.counter + 1,
-        };
-    };
-
-    rather than this:
-
-    if (action.type === 'INCREMENT') {
-        state.counter++;
-        return {
-            state,
-        };
-    };
-
-    We should NEVER change the existing state when working with Redux. Always override
-    it by returning a new state object. If we mutate the existing state rather than 
-    returning a new state, it can lead to bugs and unpredictable behavior. This can 
-    make debugging the app very, very frustrating.
-*/
