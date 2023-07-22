@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Importing our potential actions from index.js so we can manipulate the data store from
 // this file.
-import { counterActions } from '../store/index';
+import { counterActions } from '../store/counter';
 import classes from './Counter.module.css';
 
 const Counter = () => {
