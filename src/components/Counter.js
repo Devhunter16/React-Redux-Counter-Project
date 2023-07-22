@@ -20,8 +20,8 @@ const Counter = () => {
   // "useSelector", react-redux will automatically set up a subscription to the store
   // for this component so that it will get all updates to the whatever data we're 
   // extracting from our store, in this case we will get all updates to the counter. 
-  const counter = useSelector(state => state.counter);
-  const show = useSelector(state => state.showCounter);
+  const counter = useSelector(state => state.counter.counter);
+  const show = useSelector(state => state.counter.showCounter);
  
   const incrementHandler = () => {
     // Using our dispatch() function which dispatches an action. An action is a 
