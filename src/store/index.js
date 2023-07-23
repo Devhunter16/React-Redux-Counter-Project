@@ -28,7 +28,7 @@ export default store;
 
 // A subscriber is a function which does not take any parameters. Inside of the function
 // we reach out to the store with store.getState(). .getState() is a method which is
-// available on the store we created with .createStore(). It will give us the latest
+// available on the store we created with configureStore(). It will give us the latest
 // state snapshot after the store was updated.
 const Subscriber = () => {
     const latestState = store.getState();
