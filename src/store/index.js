@@ -1,4 +1,4 @@
-// Importing the createSlice and configureStore functions from redux toolkit
+// Importing configureStore function from redux toolkit
 import { configureStore } from '@reduxjs/toolkit';
 
 // Importing the slices of our data store
